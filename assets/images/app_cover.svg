@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F1EDFF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient><linearGradient id="cape" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7658EB"/><stop offset="1" stop-color="#4C2CC9"/></linearGradient></defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="195" r="154" fill="#E6DEFF" opacity=".55"/>
+  <path d="M160 229 Q256 278 352 229 L331 338 Q256 391 181 338Z" fill="url(#cape)"/>
+  <path d="M188 240 Q256 267 324 240 L312 321 Q256 356 200 321Z" fill="#211D66"/>
+  <path d="M121 139 L256 83 L391 139 L256 195Z" fill="#1B1B4B"/>
+  <path d="M165 161 L165 199 Q256 238 347 199 L347 161 L256 196Z" fill="#29226C"/>
+  <path d="M256 281 Q218 256 177 267 L150 294 Q202 292 256 332Z" fill="#FFFFFF" stroke="#5B3CE0" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M256 281 Q294 256 335 267 L362 294 Q310 292 256 332Z" fill="#FFFFFF" stroke="#5B3CE0" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M256 286 L256 333 M170 282 Q205 278 235 299 M342 282 Q307 278 277 299" fill="none" stroke="#398BCF" stroke-width="8" stroke-linecap="round"/>
+  <text x="256" y="431" text-anchor="middle" font-family="sans-serif" font-size="48" font-weight="700" fill="#1B1B4B">Study<tspan fill="#5B3CE0">Share</tspan></text>
+</svg>
