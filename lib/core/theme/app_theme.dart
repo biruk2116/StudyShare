@@ -13,7 +13,7 @@ abstract final class AppColors {
 abstract final class AppSpace {
   static const fieldGap = 12.0;
   static const controlHeight = 56.0;
-  static const buttonHeight = 58.0;
+  static const buttonHeight = 52.0;
   static const radius = 16.0;
 }
 
