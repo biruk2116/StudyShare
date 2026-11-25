@@ -120,9 +120,15 @@ class _WavePainter extends CustomPainter {
 }
 
 class AuthHeader extends StatelessWidget {
-  const AuthHeader({super.key, this.showTagline = false, this.compact = false});
+  const AuthHeader({
+    super.key,
+    this.showTagline = false,
+    this.compact = false,
+    this.prominent = false,
+  });
   final bool showTagline;
   final bool compact;
+  final bool prominent;
   @override
   Widget build(BuildContext context) {
     final narrow = MediaQuery.sizeOf(context).width < 380;
@@ -131,8 +137,12 @@ class AuthHeader extends StatelessWidget {
       children: [
         SvgPicture.asset(
           'assets/images/logo.svg',
-          width: compact ? (narrow ? 82 : 90) : (narrow ? 96 : 108),
-          height: compact ? (narrow ? 53 : 58) : (narrow ? 64 : 70),
+          width: prominent
+              ? (narrow ? 100 : 118)
+              : (compact ? (narrow ? 82 : 90) : (narrow ? 96 : 108)),
+          height: prominent
+              ? (narrow ? 59 : 70)
+              : (compact ? (narrow ? 53 : 58) : (narrow ? 64 : 70)),
         ),
         const SizedBox(height: 1),
         FittedBox(
@@ -355,12 +365,14 @@ class PrimaryButton extends StatefulWidget {
     required this.onPressed,
     this.loading = false,
     this.enabled = true,
+    this.compact = false,
   });
   final String label;
   final IconData icon;
   final VoidCallback? onPressed;
   final bool loading;
   final bool enabled;
+  final bool compact;
   @override
   State<PrimaryButton> createState() => _PrimaryButtonState();
 }
@@ -377,7 +389,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
       child: Opacity(
         opacity: active ? 1 : .6,
         child: SizedBox(
-          height: AppSpace.buttonHeight,
+          height: widget.compact ? 48 : AppSpace.buttonHeight,
           width: double.infinity,
           child: DecoratedBox(
             decoration: BoxDecoration(
@@ -417,13 +429,17 @@ class _PrimaryButtonState extends State<PrimaryButton> {
                           color: Colors.white,
                         ),
                       )
-                    : Icon(widget.icon, color: Colors.white, size: 23),
+                    : Icon(
+                        widget.icon,
+                        color: Colors.white,
+                        size: widget.compact ? 20 : 23,
+                      ),
                 label: Text(
                   widget.loading ? 'Please wait…' : widget.label,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 18,
+                  style: TextStyle(
+                    fontSize: widget.compact ? 16 : 18,
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                   ),
