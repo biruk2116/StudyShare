@@ -1,21 +1,16 @@
-<<<<<<< HEAD
-# studyshare_app
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-=======
 # StudyShare
->>>>>>> e3cf0e438d650e2ae7b1a42aef795d22b8addef6
+
+Flutter mobile front end for the StudyShare login and sign-up flows. The screens use local SVG branding and campus artwork, responsive layouts, inline validation, secure remembered-email storage, animated routing, and a mock authentication repository.
+
+## Run
+
+1. Install Flutter and Android Studio with an Android SDK.
+2. From this directory run `flutter pub get`.
+3. Connect an Android device or start an emulator, then run `flutter run`.
+
+Authentication currently uses a short mock delay. Connect the `AuthRepository` methods to Firebase or another authentication service when the backend is ready.
+
+## Checks
+
+- `flutter analyze`
+- `flutter test`
