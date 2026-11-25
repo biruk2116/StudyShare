@@ -65,7 +65,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 : 24.0;
             final gap = compact ? 6.0 : AppSpace.fieldGap;
             return SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(horizontalPadding, 2, horizontalPadding, 12),
+              padding: EdgeInsets.fromLTRB(
+                horizontalPadding,
+                2,
+                horizontalPadding,
+                12,
+              ),
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 430),
@@ -93,7 +98,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                         ),
-                        const AuthHeader(compact: true),
+                        const AuthHeader(compact: true, prominent: true),
                         SizedBox(height: compact ? 2 : 6),
                         Text(
                           'Join StudyShare',
@@ -211,14 +216,20 @@ class _SignupScreenState extends State<SignupScreen> {
                           ],
                         ),
                         Consumer<AuthController>(
-                          builder: (context, auth, _) => PrimaryButton(
-                            label: 'Create Account',
-                            icon: Icons.person_add_alt_1_rounded,
-                            enabled: _terms,
-                            loading: auth.isLoading,
-                            onPressed: _terms
-                                ? () => _submit(context, auth)
-                                : null,
+                          builder: (context, auth, _) => Center(
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 360),
+                              child: PrimaryButton(
+                                label: 'Create Account',
+                                icon: Icons.person_add_alt_1_rounded,
+                                enabled: _terms,
+                                loading: auth.isLoading,
+                                compact: true,
+                                onPressed: _terms
+                                    ? () => _submit(context, auth)
+                                    : null,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 7),
@@ -232,10 +243,17 @@ class _SignupScreenState extends State<SignupScreen> {
                                 fontSize: 14,
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () => context.go('/login'),
+                            TextButton(
+                              onPressed: () => context.go('/login'),
+                              style: TextButton.styleFrom(
+                                minimumSize: const Size(48, 44),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                ),
+                                tapTargetSize: MaterialTapTargetSize.padded,
+                              ),
                               child: const Text(
-                                'Back to Login',
+                                'Back to Sign In',
                                 style: TextStyle(
                                   color: AppColors.purple,
                                   fontWeight: FontWeight.w600,
