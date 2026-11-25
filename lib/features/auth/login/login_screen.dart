@@ -132,10 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                             TextButton(
-                              onPressed: () => _message(
-                                context,
-                                'Password recovery will be available soon.',
-                              ),
+                              onPressed: () => context.push('/forgot-password'),
                               child: const Text(
                                 'Forgot Password?',
                                 style: TextStyle(
@@ -155,16 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () => _submit(context, auth),
                           ),
                         ),
-                        const SizedBox(height: 13),
-                        const _OrDivider(),
-                        const SizedBox(height: 12),
-                        OutlinedSocialButton(
-                          onPressed: () => _message(
-                            context,
-                            'Google sign-in is ready to connect.',
-                          ),
-                        ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 16),
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
@@ -249,18 +237,3 @@ void _message(BuildContext context, String message) =>
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(message)));
-
-class _OrDivider extends StatelessWidget {
-  const _OrDivider();
-  @override
-  Widget build(BuildContext context) => const Row(
-    children: [
-      Expanded(child: Divider(color: AppColors.border)),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        child: Text('OR', style: TextStyle(color: AppColors.navy)),
-      ),
-      Expanded(child: Divider(color: AppColors.border)),
-    ],
-  );
-}
