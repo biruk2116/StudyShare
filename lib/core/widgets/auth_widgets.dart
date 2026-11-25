@@ -120,8 +120,9 @@ class _WavePainter extends CustomPainter {
 }
 
 class AuthHeader extends StatelessWidget {
-  const AuthHeader({super.key, this.showTagline = false});
+  const AuthHeader({super.key, this.showTagline = false, this.compact = false});
   final bool showTagline;
+  final bool compact;
   @override
   Widget build(BuildContext context) {
     final narrow = MediaQuery.sizeOf(context).width < 380;
@@ -130,8 +131,8 @@ class AuthHeader extends StatelessWidget {
       children: [
         SvgPicture.asset(
           'assets/images/logo.svg',
-          width: narrow ? 96 : 108,
-          height: narrow ? 64 : 70,
+          width: compact ? (narrow ? 82 : 90) : (narrow ? 96 : 108),
+          height: compact ? (narrow ? 53 : 58) : (narrow ? 64 : 70),
         ),
         const SizedBox(height: 1),
         FittedBox(
@@ -139,7 +140,7 @@ class AuthHeader extends StatelessWidget {
           child: RichText(
             text: TextSpan(
               style: TextStyle(
-                fontSize: narrow ? 35 : 39,
+                fontSize: compact ? (narrow ? 30 : 33) : (narrow ? 35 : 39),
                 fontWeight: FontWeight.w800,
                 letterSpacing: -1.7,
                 color: AppColors.navy,
@@ -183,6 +184,7 @@ class AppTextField extends StatefulWidget {
     this.password = false,
     this.visible = false,
     this.onToggle,
+    this.compact = false,
   });
   final TextEditingController controller;
   final String label;
@@ -193,6 +195,7 @@ class AppTextField extends StatefulWidget {
   final bool password;
   final bool visible;
   final VoidCallback? onToggle;
+  final bool compact;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -232,7 +235,13 @@ class _AppTextFieldState extends State<AppTextField> {
         textInputAction: widget.textInputAction,
         decoration: InputDecoration(
           hintText: widget.label,
-          prefixIcon: Icon(widget.icon, color: AppColors.purple, size: 23),
+          contentPadding: widget.compact
+              ? const EdgeInsets.symmetric(horizontal: 14, vertical: 11)
+              : null,
+          prefixIcon: Icon(widget.icon, color: AppColors.purple, size: 21),
+          prefixIconConstraints: widget.compact
+              ? const BoxConstraints(minWidth: 46, minHeight: 46)
+              : null,
           suffixIcon: widget.password
               ? IconButton(
                   tooltip: widget.visible ? 'Hide password' : 'Show password',
@@ -261,6 +270,7 @@ class AppDropdownField extends StatelessWidget {
     required this.options,
     required this.onChanged,
     this.showError = false,
+    this.compact = false,
   });
   final String? value;
   final String label;
@@ -268,6 +278,7 @@ class AppDropdownField extends StatelessWidget {
   final List<String> options;
   final ValueChanged<String> onChanged;
   final bool showError;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) => InkWell(
@@ -312,7 +323,13 @@ class AppDropdownField extends StatelessWidget {
     },
     child: InputDecorator(
       decoration: InputDecoration(
+        contentPadding: compact
+            ? const EdgeInsets.symmetric(horizontal: 14, vertical: 11)
+            : null,
         prefixIcon: Icon(icon, color: AppColors.purple),
+        prefixIconConstraints: compact
+            ? const BoxConstraints(minWidth: 46, minHeight: 46)
+            : null,
         suffixIcon: const Icon(
           Icons.keyboard_arrow_down_rounded,
           color: AppColors.navy,
