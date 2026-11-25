@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../features/auth/login/login_screen.dart';
+import '../../features/auth/forgot_password/forgot_password_screen.dart';
 import '../../features/auth/signup/signup_screen.dart';
 
 final appRouter = GoRouter(
@@ -16,6 +17,11 @@ final appRouter = GoRouter(
       path: '/signup',
       pageBuilder: (context, state) =>
           _transitionPage(state, const SignupScreen()),
+    ),
+    GoRoute(
+      path: '/forgot-password',
+      pageBuilder: (context, state) =>
+          _transitionPage(state, const ForgotPasswordScreen()),
     ),
   ],
 );
