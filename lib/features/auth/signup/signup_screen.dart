@@ -18,13 +18,11 @@ class _SignupScreenState extends State<SignupScreen> {
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
-  final _confirm = TextEditingController();
   String? _department;
   String? _year;
   bool _terms = false;
   bool _showDropdownErrors = false;
   bool _showPassword = false;
-  bool _showConfirm = false;
 
   static const _departments = [
     'Computer Science',
@@ -50,232 +48,212 @@ class _SignupScreenState extends State<SignupScreen> {
     _name.dispose();
     _email.dispose();
     _password.dispose();
-    _confirm.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
     body: WaveBackground(
-      child: Stack(
-        children: [
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: 116,
-            child: IgnorePointer(
-              child: Opacity(
-                opacity: .76,
-                child: SvgPicture.asset(
-                  'assets/images/campus_footer.svg',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.bottomCenter,
-                ),
-              ),
-            ),
-          ),
-          SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final compact = constraints.maxHeight < 790;
-                final gap = compact ? 8.0 : AppSpace.fieldGap;
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(24, 2, 24, 12),
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 430),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
+      child: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final compact = constraints.maxHeight < 740 ||
+                MediaQuery.sizeOf(context).width < 360;
+            final tiny = constraints.maxHeight < 650;
+            final horizontalPadding = MediaQuery.sizeOf(context).width < 360
+                ? 16.0
+                : 24.0;
+            final gap = compact ? 6.0 : AppSpace.fieldGap;
+            return SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(horizontalPadding, 2, horizontalPadding, 12),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 430),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: SizedBox(
+                            width: 44,
+                            height: 40,
+                            child: Material(
+                              color: const Color(0xFFE8E0FF),
+                              shape: const CircleBorder(),
+                              child: IconButton(
+                                onPressed: () => context.go('/login'),
+                                tooltip: 'Back to sign in',
+                                icon: const Icon(
+                                  Icons.chevron_left_rounded,
+                                  color: AppColors.navy,
+                                  size: 28,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const AuthHeader(compact: true),
+                        SizedBox(height: compact ? 2 : 6),
+                        Text(
+                          'Join StudyShare',
+                          style: Theme.of(context).textTheme.titleLarge,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 2),
+                        const Text(
+                          'Connect, learn, and share knowledge.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16, color: AppColors.navy),
+                        ),
+                        SizedBox(height: tiny ? 1 : (compact ? 3 : 6)),
+                        SizedBox(
+                          height: tiny ? 55 : (compact ? 68 : 82),
+                          width: double.infinity,
+                          child: SvgPicture.asset(
+                            'assets/images/login_illustration.svg',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        SizedBox(height: tiny ? 2 : 5),
+                        AppTextField(
+                          controller: _name,
+                          label: 'Full Name',
+                          icon: Icons.person_rounded,
+                          textInputAction: TextInputAction.next,
+                          validator: (v) => v == null || v.trim().length < 2
+                              ? 'Enter your full name'
+                              : null,
+                          compact: true,
+                        ),
+                        SizedBox(height: gap),
+                        AppTextField(
+                          controller: _email,
+                          label: 'Email Address',
+                          icon: Icons.mail_rounded,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          validator: _emailValidator,
+                          compact: true,
+                        ),
+                        SizedBox(height: gap),
+                        AppDropdownField(
+                          value: _department,
+                          label: 'Department',
+                          icon: Icons.account_balance_rounded,
+                          options: _departments,
+                          showError: _showDropdownErrors,
+                          onChanged: (value) =>
+                              setState(() => _department = value),
+                          compact: true,
+                        ),
+                        SizedBox(height: gap),
+                        AppDropdownField(
+                          value: _year,
+                          label: 'Academic Year',
+                          icon: Icons.school_rounded,
+                          options: _years,
+                          showError: _showDropdownErrors,
+                          onChanged: (value) => setState(() => _year = value),
+                          compact: true,
+                        ),
+                        SizedBox(height: gap),
+                        AppTextField(
+                          controller: _password,
+                          label: 'Password',
+                          icon: Icons.lock_rounded,
+                          password: true,
+                          visible: _showPassword,
+                          onToggle: () =>
+                              setState(() => _showPassword = !_showPassword),
+                          textInputAction: TextInputAction.next,
+                          validator: _passwordValidator,
+                          compact: true,
+                        ),
+                        SizedBox(height: gap),
+                        const SizedBox(height: 1),
+                        Row(
                           children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: SizedBox(
-                                width: 44,
-                                height: 44,
-                                child: Material(
-                                  color: const Color(0xFFE8E0FF),
-                                  shape: const CircleBorder(),
-                                  child: IconButton(
-                                    onPressed: () => context.go('/login'),
-                                    tooltip: 'Back to sign in',
-                                    icon: const Icon(
-                                      Icons.chevron_left_rounded,
-                                      color: AppColors.navy,
-                                      size: 28,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const AuthHeader(),
-                            SizedBox(height: compact ? 6 : 10),
-                            Text(
-                              'Join StudyShare',
-                              style: Theme.of(context).textTheme.titleLarge,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 2),
-                            const Text(
-                              'Connect, learn, and share knowledge.',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.navy,
-                              ),
-                            ),
-                            SizedBox(height: compact ? 11 : 16),
-                            AppTextField(
-                              controller: _name,
-                              label: 'Full Name',
-                              icon: Icons.person_rounded,
-                              textInputAction: TextInputAction.next,
-                              validator: (v) => v == null || v.trim().length < 2
-                                  ? 'Enter your full name'
-                                  : null,
-                            ),
-                            SizedBox(height: gap),
-                            AppTextField(
-                              controller: _email,
-                              label: 'Email Address',
-                              icon: Icons.mail_rounded,
-                              keyboardType: TextInputType.emailAddress,
-                              textInputAction: TextInputAction.next,
-                              validator: _emailValidator,
-                            ),
-                            SizedBox(height: gap),
-                            AppDropdownField(
-                              value: _department,
-                              label: 'Department',
-                              icon: Icons.account_balance_rounded,
-                              options: _departments,
-                              showError: _showDropdownErrors,
+                            Checkbox(
+                              value: _terms,
+                              activeColor: AppColors.purple,
+                              visualDensity: VisualDensity.compact,
                               onChanged: (value) =>
-                                  setState(() => _department = value),
+                                  setState(() => _terms = value ?? false),
                             ),
-                            SizedBox(height: gap),
-                            AppDropdownField(
-                              value: _year,
-                              label: 'Academic Year',
-                              icon: Icons.school_rounded,
-                              options: _years,
-                              showError: _showDropdownErrors,
-                              onChanged: (value) =>
-                                  setState(() => _year = value),
-                            ),
-                            SizedBox(height: gap),
-                            AppTextField(
-                              controller: _password,
-                              label: 'Password',
-                              icon: Icons.lock_rounded,
-                              password: true,
-                              visible: _showPassword,
-                              onToggle: () => setState(
-                                () => _showPassword = !_showPassword,
-                              ),
-                              textInputAction: TextInputAction.next,
-                              validator: _passwordValidator,
-                            ),
-                            SizedBox(height: gap),
-                            AppTextField(
-                              controller: _confirm,
-                              label: 'Confirm Password',
-                              icon: Icons.lock_rounded,
-                              password: true,
-                              visible: _showConfirm,
-                              onToggle: () =>
-                                  setState(() => _showConfirm = !_showConfirm),
-                              textInputAction: TextInputAction.done,
-                              validator: (v) => v != _password.text
-                                  ? 'Passwords do not match'
-                                  : null,
-                            ),
-                            const SizedBox(height: 3),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  value: _terms,
-                                  activeColor: AppColors.purple,
-                                  visualDensity: VisualDensity.compact,
-                                  onChanged: (value) =>
-                                      setState(() => _terms = value ?? false),
-                                ),
-                                Expanded(
-                                  child: Wrap(
-                                    children: [
-                                      const Text(
-                                        'I agree to the ',
-                                        style: TextStyle(
-                                          color: AppColors.navy,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () => _message(
-                                          context,
-                                          'Terms and Conditions will be available soon.',
-                                        ),
-                                        child: const Text(
-                                          'Terms and Conditions',
-                                          style: TextStyle(
-                                            color: AppColors.purple,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Consumer<AuthController>(
-                              builder: (context, auth, _) => PrimaryButton(
-                                label: 'Create Account',
-                                icon: Icons.person_add_alt_1_rounded,
-                                enabled: _terms,
-                                loading: auth.isLoading,
-                                onPressed: _terms
-                                    ? () => _submit(context, auth)
-                                    : null,
-                              ),
-                            ),
-                            const SizedBox(height: 11),
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              children: [
-                                const Text(
-                                  'Already have an account? ',
-                                  style: TextStyle(
-                                    color: AppColors.navy,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () => context.go('/login'),
-                                  child: const Text(
-                                    'Sign In',
+                            Expanded(
+                              child: Wrap(
+                                children: [
+                                  const Text(
+                                    'I agree to the ',
                                     style: TextStyle(
-                                      color: AppColors.purple,
-                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.navy,
                                       fontSize: 14,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  GestureDetector(
+                                    onTap: () => _message(
+                                      context,
+                                      'Terms and Conditions will be available soon.',
+                                    ),
+                                    child: const Text(
+                                      'Terms and Conditions',
+                                      style: TextStyle(
+                                        color: AppColors.purple,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            const SizedBox(height: 94),
                           ],
                         ),
-                      ),
+                        Consumer<AuthController>(
+                          builder: (context, auth, _) => PrimaryButton(
+                            label: 'Create Account',
+                            icon: Icons.person_add_alt_1_rounded,
+                            enabled: _terms,
+                            loading: auth.isLoading,
+                            onPressed: _terms
+                                ? () => _submit(context, auth)
+                                : null,
+                          ),
+                        ),
+                        const SizedBox(height: 7),
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          children: [
+                            const Text(
+                              'Already have an account? ',
+                              style: TextStyle(
+                                color: AppColors.navy,
+                                fontSize: 14,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => context.go('/login'),
+                              child: const Text(
+                                'Back to Login',
+                                style: TextStyle(
+                                  color: AppColors.purple,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: tiny ? 8 : 14),
+                      ],
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-        ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     ),
   );
